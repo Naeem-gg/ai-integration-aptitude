@@ -46,7 +46,14 @@ export async function POST(req: Request) {
     const { history, message, provider: requestedProvider } = await req.json();
     
     // Determine which provider to use: Priority is Body > Env
-    const activeProvider = requestedProvider || process.env.AI_PROVIDER || 'gemini';
+    let activeProvider = requestedProvider || process.env.AI_PROVIDER || 'gemini';
+
+    // Production Fallback: If local provider is selected but URL is missing (Vercel), use Groq
+    if ((activeProvider === 'lmstudio' && !process.env.LM_STUDIO_BASE_URL) || 
+        (activeProvider === 'ollama' && !process.env.OLLAMA_BASE_URL)) {
+      console.log(`[AI Routing] Local provider ${activeProvider} unavailable in this environment. Falling back to Groq.`);
+      activeProvider = 'groq';
+    }
 
     if (activeProvider === 'gemini') {
       if (!apiKey) {

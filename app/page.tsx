@@ -44,7 +44,7 @@ export default function Home() {
   const [profile, setProfile] = useState<UserProfile>({
     name: '', age: '', grade: '', strength: '', preference: '', subjects: ''
   });
-  const [aiProvider, setAiProvider] = useState<'lmstudio' | 'groq' | 'gemini'>('lmstudio');
+  const [aiProvider, setAiProvider] = useState<'lmstudio' | 'groq' | 'gemini'>('groq');
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
